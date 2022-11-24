@@ -4,7 +4,7 @@ import javax.swing.SwingUtilities;
 
 import org.opencv.core.Core;
 
-import Image.FeatureExtraction;
+import Classifier.FeatureExtraction;
 
 public class Main 
 {

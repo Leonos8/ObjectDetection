@@ -1,4 +1,4 @@
-package Image;
+package Classifier;
 
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
