@@ -84,7 +84,13 @@ public class FeatureExtraction
 					}
 					
 					magnitude[c][r]=Math.sqrt(Math.pow(Gx[c][r], 2)+Math.pow(Gy[c][r], 2));
-					theta[c][r]=Math.abs(Math.toDegrees(Math.atan(Gy[c][r]/Gx[c][r])));
+					theta[c][r]=Math.toDegrees(Math.atan2(Gx[c][r], Gy[c][r]));
+					//theta[c][r]=Math.abs(Math.toDegrees(Math.atan(Gy[c][r]/Gx[c][r]))); TODO
+					
+					if(theta[c][r]<0)
+					{
+						theta[c][r]+=180;
+					}
 					
 					i++;
 				}
