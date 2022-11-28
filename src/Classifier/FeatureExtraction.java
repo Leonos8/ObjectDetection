@@ -208,71 +208,21 @@ public class FeatureExtraction
 		double[] featureVector=
 				new double[normalizedVector.length*normalizedVector[0].length*normalizedVector[0][0].length];
 		
+		int index=0;
 		for(int c=0; c<normalizedVector.length; c++)
 		{
 			for(int r=0; r<normalizedVector[c].length; r++)
 			{
 				for(int i=0; i<normalizedVector[c][r].length; i++)
 				{
-					featureVector[c+r+i]=normalizedVector[c][r][i];
+					featureVector[index]=normalizedVector[c][r][i];
+					index++;
 				}
 			}
 		}
 		
 		return featureVector;
 	}
-	
-	/*public void createFeatureVector(double[][][] ninePointHistogram)
-	{
-		double[][][] featureVector=new double[15][7][36];
-		double epsilon=1e-05;
-		
-		for(int i=0; i<ninePointHistogram.length-1; i++)
-		{
-			double[][] temp=new double[7][36];
-			
-			for(int j=0; j<ninePointHistogram[i].length; j++)
-			{
-				double[][][] values=new double[2][2][9];
-				
-				for(int x=0; x<2; x++)
-				{
-					for(int y=0; y<2; y++)
-					{
-						values[y][x]=ninePointHistogram[y][x];
-					}
-				}
-				
-				double[] finalVector=new double[36];
-				
-				int z=0;
-				for(double[][] k : values)
-				{
-					for(double[] l : k)
-					{
-						for(double m : l)
-						{
-							finalVector[z]=m;
-							z++;
-						}
-					}
-					//z=0;
-					double sum=0;
-					for(double x : finalVector)
-					{
-						sum+=Math.pow(x, 2);
-					}
-					
-					sum=Math.sqrt(sum);
-					
-					for(double x : finalVector)
-					{
-						
-					}
-				}
-			}
-		}
-	}*/
 	
 	public double[][][] normalize(double[][][] concatenatedVector)
 	{
