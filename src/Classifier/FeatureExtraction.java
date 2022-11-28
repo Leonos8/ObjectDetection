@@ -119,7 +119,7 @@ public class FeatureExtraction
 		int stepSize=20;
 		
 		double[][][] ninePointHistogram=calculate9PointHistogram(magnitude, theta, binNum, stepSize);
-		//createFeatureVector(ninePointHistogram);
+		createFeatureVector(ninePointHistogram);
 	}
 	
 	public double[][][] calculate9PointHistogram(double[][] magnitude, double[][] theta, int binNum, int stepSize)
@@ -177,12 +177,29 @@ public class FeatureExtraction
 	{
 		double[][][] featureVector=new double[15][7][36];
 		
-		for(int r=0; r<127; r++)
+		for(int c=0; c<15; c++)
 		{
-			for(int c=0; c<63; c++)
+			for(int r=0; r<7; r++)
 			{
-				featureVector[c][r]=ninePointHistogram[c][r]+ninePointHistogram[c+1][r]
-						+ninePointHistogram[c][r+1]+ninePointHistogram[c+1][r+1];
+				for(int i=0; i<9; i++)
+				{
+					featureVector[c][r][i]=ninePointHistogram[c][r][i];
+				}
+				
+				for(int j=9; j<18; j++)
+				{
+					featureVector[c][r][j]=ninePointHistogram[c+1][r][j-9];
+				}
+				
+				for(int k=18; k<27; k++)
+				{
+					featureVector[c][r][k]=ninePointHistogram[c][r+1][k-18];
+				}
+				
+				for(int l=27; l<36; l++)
+				{
+					featureVector[c][r][l]=ninePointHistogram[c][r+1][l-27];
+				}
 			}
 		}
 	}
