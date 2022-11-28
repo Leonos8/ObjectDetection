@@ -141,10 +141,31 @@ public class FeatureExtraction
 				{
 					for(int j=0; j<8; j++)
 					{
-						int jValue=calculateJBin(stepSize, theta[c+j][r+i]);
-						double Vj=calculateJValue(magnitude[c+j][r+i], theta[c+j][r+i], jValue, stepSize);
+						int b=(int)(theta[c+j][r+i]/20);
+						double br=theta[c+j][r+i]%20;
+						
+						double v0=magnitude[c+j][r+i]*((20-br)/20);
+						double v1=magnitude[c+j][r+i]*(br/20);
+						
+						if(b<8)
+						{
+							bins[b]+=v0;
+							bins[b+1]+=v1;
+						}
+						else if(b==9)
+						{
+							bins[8]+=v0;
+						}
+						else
+						{
+							bins[b]+=v0;
+							bins[0]+=v1;
+						}
+						
+						//int jValue=calculateJBin(stepSize, theta[c+j][r+i]);
+						//double Vj=calculateJValue(magnitude[c+j][r+i], theta[c+j][r+i], jValue, stepSize);
 						//double Vj1=magnitude[c+j][r+i]-Vj;
-						bins[jValue]+=Vj;
+						//bins[jValue]+=Vj;
 						//bins[jValue+1]+=Vj1;
 					}
 				}
