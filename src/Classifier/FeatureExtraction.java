@@ -152,7 +152,7 @@ public class FeatureExtraction
 				}
 				else if(b==9)
 				{
-					bins[8]+=v0;
+					bins[8]+=v0+v1;
 				}
 				else
 				{
