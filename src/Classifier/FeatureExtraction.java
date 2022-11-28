@@ -126,53 +126,47 @@ public class FeatureExtraction
 	{
 		double[][][] ninePointHistogram=new double[16][8][9];
 		
-		for(int r=0; r<128; r+=8)
+		for(int r=0; r<128; r++)
 		{
+			int histBlockRow = r/8;
 			double[][] temp=new double[8][9];
-			for(int c=0; c<64; c+=8)
+			for(int c=0; c<64; c++)
 			{
 				double[] bins=new double[binNum];
 				for(int t=0; t<binNum; t++)
 				{
 					bins[t]=0;
 				}
+				int histBlockCol = c/8;
 				
-				for(int i=0; i<8; i++)
+				int b=(int)(theta[c][r]/20);
+				double br=theta[c][r]%20;
+						
+				double v0=magnitude[c][r]*((20-br)/20);
+				double v1=magnitude[c][r]*(br/20);
+						
+				if(b<8)
 				{
-					for(int j=0; j<8; j++)
-					{
-						int b=(int)(theta[c+j][r+i]/20);
-						double br=theta[c+j][r+i]%20;
-						
-						double v0=magnitude[c+j][r+i]*((20-br)/20);
-						double v1=magnitude[c+j][r+i]*(br/20);
-						
-						if(b<8)
-						{
-							bins[b]+=v0;
-							bins[b+1]+=v1;
-						}
-						else if(b==9)
-						{
-							bins[8]+=v0;
-						}
-						else
-						{
-							bins[b]+=v0;
-							bins[0]+=v1;
-						}
-						
-						//int jValue=calculateJBin(stepSize, theta[c+j][r+i]);
-						//double Vj=calculateJValue(magnitude[c+j][r+i], theta[c+j][r+i], jValue, stepSize);
-						//double Vj1=magnitude[c+j][r+i]-Vj;
-						//bins[jValue]+=Vj;
-						//bins[jValue+1]+=Vj1;
-					}
+					bins[b]+=v0;
+					bins[b+1]+=v1;
 				}
-				
-				temp[c/8]=bins;
-			}
-			ninePointHistogram[r/8]=temp;
+				else if(b==9)
+				{
+					bins[8]+=v0;
+				}
+				else
+				{
+					bins[b]+=v0;
+					bins[0]+=v1;
+				}
+				//int jValue=calculateJBin(stepSize, theta[c+j][r+i]);
+				//double Vj=calculateJValue(magnitude[c+j][r+i], theta[c+j][r+i], jValue, stepSize);
+				//double Vj1=magnitude[c+j][r+i]-Vj;
+				//bins[jValue]+=Vj;
+				//bins[jValue+1]+=Vj1;
+				temp[histBlockCol]=bins;
+				}
+			ninePointHistogram[histBlockRow]=temp;
 		}
 		
 		return ninePointHistogram;
