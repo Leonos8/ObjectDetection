@@ -144,8 +144,12 @@ public class FeatureExtraction
 						
 				double v0=magnitude[c][r]*((20-br)/20);
 				double v1=magnitude[c][r]*(br/20);
-						
-				if(b<8)
+				
+				if(b==0 && br==0)
+				{
+					bins[0]=v0+v1;
+				}
+				else if(b<8)
 				{
 					bins[b]+=v0;
 					bins[b+1]+=v1;
