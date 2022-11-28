@@ -173,7 +173,7 @@ public class FeatureExtraction
 		return ninePointHistogram;
 	}
 	
-	public void createFeatureVector(double[][][] ninePointHistogram)
+	public double[] createFeatureVector(double[][][] ninePointHistogram)
 	{
 		double[][][] concatenatedVector=new double[15][7][36];
 		
@@ -204,6 +204,22 @@ public class FeatureExtraction
 		}
 		
 		double[][][] normalizedVector=normalize(concatenatedVector);
+		
+		double[] featureVector=
+				new double[normalizedVector.length*normalizedVector[0].length*normalizedVector[0][0].length];
+		
+		for(int c=0; c<normalizedVector.length; c++)
+		{
+			for(int r=0; r<normalizedVector[c].length; r++)
+			{
+				for(int i=0; i<normalizedVector[c][r].length; i++)
+				{
+					featureVector[c+r+i]=normalizedVector[c][r][i];
+				}
+			}
+		}
+		
+		return featureVector;
 	}
 	
 	/*public void createFeatureVector(double[][][] ninePointHistogram)
