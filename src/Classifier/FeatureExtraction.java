@@ -175,7 +175,7 @@ public class FeatureExtraction
 	
 	public void createFeatureVector(double[][][] ninePointHistogram)
 	{
-		double[][][] featureVector=new double[15][7][36];
+		double[][][] concatenatedVector=new double[15][7][36];
 		
 		for(int c=0; c<15; c++)
 		{
@@ -183,25 +183,27 @@ public class FeatureExtraction
 			{
 				for(int i=0; i<9; i++)
 				{
-					featureVector[c][r][i]=ninePointHistogram[c][r][i];
+					concatenatedVector[c][r][i]=ninePointHistogram[c][r][i];
 				}
 				
 				for(int j=9; j<18; j++)
 				{
-					featureVector[c][r][j]=ninePointHistogram[c+1][r][j-9];
+					concatenatedVector[c][r][j]=ninePointHistogram[c+1][r][j-9];
 				}
 				
 				for(int k=18; k<27; k++)
 				{
-					featureVector[c][r][k]=ninePointHistogram[c][r+1][k-18];
+					concatenatedVector[c][r][k]=ninePointHistogram[c][r+1][k-18];
 				}
 				
 				for(int l=27; l<36; l++)
 				{
-					featureVector[c][r][l]=ninePointHistogram[c][r+1][l-27];
+					concatenatedVector[c][r][l]=ninePointHistogram[c+1][r+1][l-27];
 				}
 			}
 		}
+		
+		double[][][] normalizedVector=normalize(concatenatedVector);
 	}
 	
 	/*public void createFeatureVector(double[][][] ninePointHistogram)
@@ -256,9 +258,29 @@ public class FeatureExtraction
 		}
 	}*/
 	
-	public double[][][] normalize(double[][][] tmp)
+	public double[][][] normalize(double[][][] concatenatedVector)
 	{
-		double[][][] normalizedVector=new double[1][][];
+		double[][][] normalizedVector=
+				new double[concatenatedVector.length][concatenatedVector[0].length][concatenatedVector[0][0].length];
+		
+		for(int c=0; c<concatenatedVector.length; c++)
+		{
+			for(int r=0; r<concatenatedVector[c].length; r++)
+			{
+				double L2Norm=0;
+				for(int i=0; i<concatenatedVector[c][r].length; i++)
+				{
+					L2Norm+=Math.pow(concatenatedVector[c][r][i], 2);
+				}
+				
+				L2Norm=Math.sqrt(L2Norm);
+				
+				for(int j=0; j<concatenatedVector[c][r].length; j++)
+				{
+					normalizedVector[c][r][j]=concatenatedVector[c][r][j]/L2Norm;
+				}
+			}
+		}
 		return normalizedVector;
 	}
 }
