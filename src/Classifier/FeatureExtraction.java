@@ -163,66 +163,31 @@ public class FeatureExtraction
 					bins[b]+=v0;
 					bins[0]+=v1;
 				}
-				//int jValue=calculateJBin(stepSize, theta[c+j][r+i]);
-				//double Vj=calculateJValue(magnitude[c+j][r+i], theta[c+j][r+i], jValue, stepSize);
-				//double Vj1=magnitude[c+j][r+i]-Vj;
-				//bins[jValue]+=Vj;
-				//bins[jValue+1]+=Vj1;
+				
 				temp[histBlockCol]=bins;
-				}
+			}
+			
 			ninePointHistogram[histBlockRow]=temp;
 		}
 		
 		return ninePointHistogram;
 	}
 	
-	/*public double[][][] calculate9PointHistogram(double[][] magnitude, double[][] theta, int binNum, int stepSize)
-	{
-		double[][][] ninePointHistogram=new double[16][8][9];
-		
-		for(int r=0; r<128; r+=8)
-		{
-			double[][] temp=new double[8][9];
-			for(int c=0; c<64; c+=8)
-			{
-				double[][] magValues=new double[8][8];
-				double[][] thetaValues=new double[8][8];
-				
-				for(int i=0; i<8; i++)
-				{
-					for(int j=0; j<8; j++)
-					{
-						magValues[i][j]=magnitude[c+j][r+i];
-						thetaValues[i][j]=theta[c+j][r+i];
-					}
-				}
-				
-				double[] bins=new double[binNum];
-				for(int t=0; t<binNum; t++)
-				{
-					bins[t]=0;
-				}
-				
-				for(int k=0; k<magValues.length; k++)
-				{
-					for(int l=0; l<magValues[k].length; l++)
-					{
-						int jValue=calculateJBin(stepSize, thetaValues[k][l]);
-						double Vj=calculateJValue(magValues[k][l], thetaValues[k][l], jValue, stepSize);
-						double Vj1=magValues[k][l]-Vj;
-						bins[jValue]+=Vj;
-						bins[jValue+1]+=Vj1;
-					}
-				}
-				temp[c/8]=bins;
-			}
-			ninePointHistogram[r/8]=temp;
-		}
-		
-		return ninePointHistogram;
-	}*/
-	
 	public void createFeatureVector(double[][][] ninePointHistogram)
+	{
+		double[][][] featureVector=new double[15][7][36];
+		
+		for(int r=0; r<127; r++)
+		{
+			for(int c=0; c<63; c++)
+			{
+				featureVector[c][r]=ninePointHistogram[c][r]+ninePointHistogram[c+1][r]
+						+ninePointHistogram[c][r+1]+ninePointHistogram[c+1][r+1];
+			}
+		}
+	}
+	
+	/*public void createFeatureVector(double[][][] ninePointHistogram)
 	{
 		double[][][] featureVector=new double[15][7][36];
 		double epsilon=1e-05;
@@ -272,28 +237,11 @@ public class FeatureExtraction
 				}
 			}
 		}
-	}
+	}*/
 	
-	public int calculateJBin(int stepSize, double angle)
+	public double[][][] normalize(double[][][] tmp)
 	{
-		double temp=(angle/stepSize)-.5;
-		int j=(int)temp;
-		
-		return j;
-	}
-	
-	public double calculateJCenter(int j, int stepSize)
-	{
-		double Cj=stepSize*(j+.5);
-		
-		return Cj;
-	}
-	
-	public double calculateJValue(double magnitude, double angle, int j, int stepSize)
-	{
-		double Cj=calculateJCenter(j+1, stepSize);
-		double Vj=magnitude*((Cj-angle)/stepSize);
-		
-		return Vj;
+		double[][][] normalizedVector=new double[1][][];
+		return normalizedVector;
 	}
 }
