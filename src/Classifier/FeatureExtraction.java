@@ -175,7 +175,7 @@ public class FeatureExtraction
 	
 	public double[] createFeatureVector(double[][][] ninePointHistogram)
 	{
-		double[][][] concatenatedVector=new double[15][7][36];
+		double[][][] concatenatedArray=new double[15][7][36];
 		
 		for(int c=0; c<15; c++)
 		{
@@ -183,39 +183,39 @@ public class FeatureExtraction
 			{
 				for(int i=0; i<9; i++)
 				{
-					concatenatedVector[c][r][i]=ninePointHistogram[c][r][i];
+					concatenatedArray[c][r][i]=ninePointHistogram[c][r][i];
 				}
 				
 				for(int j=9; j<18; j++)
 				{
-					concatenatedVector[c][r][j]=ninePointHistogram[c+1][r][j-9];
+					concatenatedArray[c][r][j]=ninePointHistogram[c+1][r][j-9];
 				}
 				
 				for(int k=18; k<27; k++)
 				{
-					concatenatedVector[c][r][k]=ninePointHistogram[c][r+1][k-18];
+					concatenatedArray[c][r][k]=ninePointHistogram[c][r+1][k-18];
 				}
 				
 				for(int l=27; l<36; l++)
 				{
-					concatenatedVector[c][r][l]=ninePointHistogram[c+1][r+1][l-27];
+					concatenatedArray[c][r][l]=ninePointHistogram[c+1][r+1][l-27];
 				}
 			}
 		}
 		
-		double[][][] normalizedVector=normalize(concatenatedVector);
+		double[][][] normalizedArray=normalize(concatenatedArray);
 		
 		double[] featureVector=
-				new double[normalizedVector.length*normalizedVector[0].length*normalizedVector[0][0].length];
+				new double[normalizedArray.length*normalizedArray[0].length*normalizedArray[0][0].length];
 		
 		int index=0;
-		for(int c=0; c<normalizedVector.length; c++)
+		for(int c=0; c<normalizedArray.length; c++)
 		{
-			for(int r=0; r<normalizedVector[c].length; r++)
+			for(int r=0; r<normalizedArray[c].length; r++)
 			{
-				for(int i=0; i<normalizedVector[c][r].length; i++)
+				for(int i=0; i<normalizedArray[c][r].length; i++)
 				{
-					featureVector[index]=normalizedVector[c][r][i];
+					featureVector[index]=normalizedArray[c][r][i];
 					index++;
 				}
 			}
@@ -224,29 +224,29 @@ public class FeatureExtraction
 		return featureVector;
 	}
 	
-	public double[][][] normalize(double[][][] concatenatedVector)
+	public double[][][] normalize(double[][][] concatenatedArray)
 	{
-		double[][][] normalizedVector=
-				new double[concatenatedVector.length][concatenatedVector[0].length][concatenatedVector[0][0].length];
+		double[][][] normalizedArray=
+				new double[concatenatedArray.length][concatenatedArray[0].length][concatenatedArray[0][0].length];
 		
-		for(int c=0; c<concatenatedVector.length; c++)
+		for(int c=0; c<concatenatedArray.length; c++)
 		{
-			for(int r=0; r<concatenatedVector[c].length; r++)
+			for(int r=0; r<concatenatedArray[c].length; r++)
 			{
 				double L2Norm=0;
-				for(int i=0; i<concatenatedVector[c][r].length; i++)
+				for(int i=0; i<concatenatedArray[c][r].length; i++)
 				{
-					L2Norm+=Math.pow(concatenatedVector[c][r][i], 2);
+					L2Norm+=Math.pow(concatenatedArray[c][r][i], 2);
 				}
 				
 				L2Norm=Math.sqrt(L2Norm);
 				
-				for(int j=0; j<concatenatedVector[c][r].length; j++)
+				for(int j=0; j<concatenatedArray[c][r].length; j++)
 				{
-					normalizedVector[c][r][j]=concatenatedVector[c][r][j]/L2Norm;
+					normalizedArray[c][r][j]=concatenatedArray[c][r][j]/L2Norm;
 				}
 			}
 		}
-		return normalizedVector;
+		return normalizedArray;
 	}
 }
