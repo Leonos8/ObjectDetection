@@ -1,5 +1,12 @@
 package Main;
 
+/*
+ * Image creation
+ * Preprocess
+ * FeatureExtraction
+ * LinearSVM
+ */
+
 import javax.swing.SwingUtilities;
 
 import org.opencv.core.Core;

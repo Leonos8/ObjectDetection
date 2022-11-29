@@ -9,18 +9,36 @@ public class FeatureExtraction
 {
 	ImageCreation image=new ImageCreation();
 	Preprocess processor=new Preprocess();
-	Mat matrix=processor.getMatrix();
+	Mat[] matrix=processor.getMatrix();
 	
 	public FeatureExtraction()
 	{
-		HistogramOfOrientedGradients(matrix);
+		double[][] featureVector = new double[matrix.length][HistogramOfOrientedGradients(matrix[0], 0).length];
+		for(int i=0; i<matrix.length; i++)
+		{
+			//System.out.println(i);
+			featureVector[i]=HistogramOfOrientedGradients(matrix[i], i);
+			//System.out.println(featureVector[i][0]);
+		}
+		for(int i=0; i<featureVector[0].length; i++)
+		{
+			System.out.println(featureVector[0][i]);
+		}
 	}
 	
-	public void HistogramOfOrientedGradients(Mat matrix)
+	public double[] HistogramOfOrientedGradients(Mat matrix, int index)
 	{
-		Imgproc.cvtColor(matrix, matrix, Imgproc.COLOR_BGR2GRAY);
+		if(matrix.channels()==3)
+		{
+			Imgproc.cvtColor(matrix, matrix, Imgproc.COLOR_BGR2GRAY);
+		}
+		else if(matrix.channels()==2)
+		{
+			
+		}
 		
-		image.displayImage(matrix);
+		
+		//image.displayImage(matrix);
 		
 		double[][] Gx=new double[matrix.cols()][matrix.rows()];
 		double[][] Gy=new double[matrix.cols()][matrix.rows()];
@@ -101,7 +119,7 @@ public class FeatureExtraction
 			System.out.println("hi");
 		}
 		
-		image.displayImage(matrix);
+		//image.displayImage(matrix);
 		
 		int j=0;
 		for(int c=0; c<matrix.cols(); c++)
@@ -113,13 +131,13 @@ public class FeatureExtraction
 			}
 		}
 		
-		image.displayImage(matrix);
+		//image.displayImage(matrix);
 		
 		int binNum=9;
 		int stepSize=20;
 		
 		double[][][] ninePointHistogram=calculate9PointHistogram(magnitude, theta, binNum, stepSize);
-		createFeatureVector(ninePointHistogram);
+		return createFeatureVector(ninePointHistogram);
 	}
 	
 	public double[][][] calculate9PointHistogram(double[][] magnitude, double[][] theta, int binNum, int stepSize)

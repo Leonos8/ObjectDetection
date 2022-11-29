@@ -7,19 +7,23 @@ import org.opencv.imgproc.Imgproc;
 public class Preprocess 
 {
 	ImageCreation image=new ImageCreation();
-	Mat matrix=image.createImage();
+	Mat[] matrix=image.createTrainingImageSet();
 	
 	public Preprocess()
 	{
-		setMatrix(gammaCorrection(matrix));
+		for(int i=0; i<matrix.length; i++)
+		{
+			System.out.println(i);
+			setMatrix(gammaCorrection(matrix[i]), i);
+		}
 	}
 	
-	public void setMatrix(Mat matrix)
+	public void setMatrix(Mat matrix, int i)
 	{
-		this.matrix=matrix;
+		this.matrix[i]=matrix;
 	}
 	
-	public Mat getMatrix()
+	public Mat[] getMatrix()
 	{
 		return matrix;
 	}
