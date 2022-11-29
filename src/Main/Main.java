@@ -10,8 +10,11 @@ package Main;
 import javax.swing.SwingUtilities;
 
 import org.opencv.core.Core;
+import org.opencv.core.Mat;
 
 import Classifier.FeatureExtraction;
+import Classifier.ImageCreation;
+import Classifier.Preprocess;
 
 public class Main 
 {
@@ -23,11 +26,16 @@ public class Main
 		{
 			public void run()
 			{
-				//ImageCreation img=new ImageCreation();
+				ImageCreation IC=new ImageCreation();
+				Mat[] oldMatrix=IC.createTrainingImageSet();
 				
-				//Preprocess processor=new Preprocess();
+				Preprocess processor=new Preprocess(oldMatrix);
 				
-				FeatureExtraction feature=new FeatureExtraction();
+				Mat[] matrix=processor.getMatrix();
+				
+				FeatureExtraction feature=new FeatureExtraction(matrix);
+				
+				feature.runFeatureExtraction();
 			}
 		});
 	}

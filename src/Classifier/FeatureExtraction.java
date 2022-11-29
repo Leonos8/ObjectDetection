@@ -7,13 +7,18 @@ import org.opencv.imgproc.Imgproc;
 
 public class FeatureExtraction 
 {
-	ImageCreation image=new ImageCreation();
-	Preprocess processor=new Preprocess();
-	Mat[] matrix=processor.getMatrix();
+	Mat[] matrix;
 	
-	public FeatureExtraction()
+	double[][] featureVector;
+	
+	public FeatureExtraction(Mat[] matrix)
 	{
-		double[][] featureVector = new double[matrix.length][HistogramOfOrientedGradients(matrix[0], 0).length];
+		this.matrix=matrix;
+	}
+	
+	public void runFeatureExtraction()
+	{
+		featureVector = new double[matrix.length][HistogramOfOrientedGradients(matrix[0], 0).length];
 		for(int i=0; i<matrix.length; i++)
 		{
 			//System.out.println(i);
@@ -24,6 +29,18 @@ public class FeatureExtraction
 		{
 			System.out.println(featureVector[0][i]);
 		}
+		
+		setFeatureVector(featureVector);
+	}
+	
+	public void setFeatureVector(double[][] featureVector)
+	{
+		this.featureVector=featureVector;
+	}
+	
+	public double[][] getFeatureVector()
+	{
+		return featureVector;
 	}
 	
 	public double[] HistogramOfOrientedGradients(Mat matrix, int index)

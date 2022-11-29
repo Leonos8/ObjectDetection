@@ -6,14 +6,13 @@ import org.opencv.imgproc.Imgproc;
 
 public class Preprocess 
 {
-	ImageCreation image=new ImageCreation();
-	Mat[] matrix=image.createTrainingImageSet();
+	Mat[] matrix;
 	
-	public Preprocess()
+	public Preprocess(Mat[] matrix)
 	{
+		this.matrix=matrix;
 		for(int i=0; i<matrix.length; i++)
 		{
-			System.out.println(i);
 			setMatrix(gammaCorrection(matrix[i]), i);
 		}
 	}
