@@ -32,11 +32,6 @@ public class FeatureExtraction
 		{
 			Imgproc.cvtColor(matrix, matrix, Imgproc.COLOR_BGR2GRAY);
 		}
-		else if(matrix.channels()==2)
-		{
-			
-		}
-		
 		
 		//image.displayImage(matrix);
 		
