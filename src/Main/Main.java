@@ -14,6 +14,7 @@ import org.opencv.core.Mat;
 
 import Classifier.FeatureExtraction;
 import Classifier.ImageCreation;
+import Classifier.LinearSVM;
 import Classifier.Preprocess;
 
 public class Main 
@@ -36,6 +37,16 @@ public class Main
 				FeatureExtraction feature=new FeatureExtraction(matrix);
 				
 				feature.runFeatureExtraction();
+				
+				double[][] featureVector=feature.getFeatureVector();
+				
+				//Will edit these accordingly
+				int epochs=500;
+				int batch=100;
+				double learningRate=.5;
+				double C=1; //Might make a method to calculate this?
+				
+				LinearSVM lsvm=new LinearSVM(featureVector, epochs, batch, learningRate, C);
 			}
 		});
 	}
