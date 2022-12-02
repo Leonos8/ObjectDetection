@@ -23,8 +23,8 @@ public class ImageCreation
 {
 	public static final File currDir=new File(".");
 	public static final String absolutePath=currDir.getAbsolutePath();
-	public static final String path=absolutePath.substring(0, absolutePath.length()-2);	
-	public static final String trainImgPath=path+File.separator+"res"+File.separator+"Train"+File.separator;
+	public static final String path=absolutePath.substring(0, absolutePath.length()-2)+File.separator+"res"+File.separator;	
+	public static final String trainImgPath=path+"Train"+File.separator;
 	
 	JFrame frame;
 

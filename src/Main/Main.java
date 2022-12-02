@@ -16,12 +16,37 @@ import Classifier.FeatureExtraction;
 import Classifier.ImageCreation;
 import Classifier.LinearSVM;
 import Classifier.Preprocess;
+import Classifier.XMLParser;
 
 public class Main 
 {
 	public static void main(String[] args)
 	{
 		System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+		
+		XMLParser xml=new XMLParser();
+		
+		int[][] test=xml.parsePersonBounds
+				("C:\\Users\\covic\\OneDrive\\Documents\\GitHub\\ObjectDetection\\res\\Train\\Annotations\\image (244).xml");
+		
+		for(int i=0; i<test.length; i++)
+		{
+			for(int j=0; j<test[i].length; j++)
+			{
+				System.out.println(test[i][j]);
+			}
+			System.out.println();
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		SwingUtilities.invokeLater(new Runnable()
 		{

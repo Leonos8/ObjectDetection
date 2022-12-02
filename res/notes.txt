@@ -1,0 +1,16 @@
+Take images -> Extract HOG features which will be length 3780 -> Take SVM Coefficients which will be of length 3780 -> multiply
+the HOG features and SVM coefficients together -> 3780*3780+b=1(H)/-1(NH)
+
+Sliding Window:
+Take box of 64x128 -> extract window of that size in top left corner -> take hog features -> supply it to SVM -> Identifies whether
+that window is human or not -> Slides window one pixel to the right -> repeat the process until reaching the end of the row ->
+repeat process one pixel down -> you will be able to get the X and Y coordinates of the person because you will know the how many
+pixels the sliding window has moved -> What if sliding window doesnt enclose the person completely -> use technique called image
+pyramid
+
+Image Pyramid:
+Use the sliding window on top of the image -> extract some objects that match the size -> Downscale the image and repeat the sliding
+window technique ->Repeat until the person is identified and encapsulated -> Dalal and Triggs have identified you can use up to
+6 scales and with reasonable confidence locate objects of different sizes and different scales -> Then use NMS technique
+
+Can eventually create my own XMLParser but for now will use DOMParser
