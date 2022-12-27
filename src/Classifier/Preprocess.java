@@ -7,14 +7,11 @@ import org.opencv.imgproc.Imgproc;
 public class Preprocess 
 {
 	Mat[] matrix;
+	int count=0;
 	
-	public Preprocess(Mat[] matrix)
+	public Preprocess()
 	{
-		this.matrix=matrix;
-		for(int i=0; i<matrix.length; i++)
-		{
-			setMatrix(gammaCorrection(matrix[i]), i);
-		}
+		
 	}
 	
 	public void setMatrix(Mat matrix, int i)
@@ -27,10 +24,24 @@ public class Preprocess
 		return matrix;
 	}
 	
+	public void setMatrixArray(Mat[] matrix)
+	{
+		this.matrix=matrix;
+	}
+	
+	public void applyGammaCorrection()
+	{
+		for(int i=0; i<matrix.length; i++)
+		{
+			setMatrix(gammaCorrection(matrix[i]), i);
+		}
+	}
+	
 	public Mat gammaCorrection(Mat matrix)
 	{		
 		double gamma=2.2;
-		
+		System.out.println(count);
+		count++;
 		for(int c=0; c<matrix.cols(); c++)
 		{
 			for(int r=0; r<matrix.rows(); r++)

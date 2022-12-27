@@ -1,82 +1,69 @@
 package Classifier;
 
-import java.awt.Dimension;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.Scanner;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class XMLParser 
 {
-	
-	DOMParser dom=new DOMParser();
-	
-	
-	
-	
 	public int[][] parsePersonBounds(String path)
 	{
-		int[][] bounds=new int[numLines(path)][4];
+		int[][] bounds = null;
 		try {
-			Scanner sc=new Scanner(new File(path));
-			int i=0;
-			while(sc.hasNext())
-			{
-				String line=sc.nextLine();
-				if(line.contains(">person<"))
-				{
-					while(!line.equals("bndbox"))
-					{
-						sc.nextLine();
-					}
-					sc.nextLine();
-					String val=sc.nextLine();
-					val=val.substring(val.indexOf('>'), val.indexOf('<'));
-					int xmin=Integer.parseInt(val);
-					
-					val=sc.nextLine();
-					val=val.substring(val.indexOf('>'), val.indexOf('<'));
-					int ymin=Integer.parseInt(val);
-					
-					val=sc.nextLine();
-					val=val.substring(val.indexOf('>'), val.indexOf('<'));
-					int xmax=Integer.parseInt(val);
-					
-					val=sc.nextLine();
-					val=val.substring(val.indexOf('>'), val.indexOf('<'));
-					int ymax=Integer.parseInt(val);
-					
-					bounds[i][0]=xmin;
-					bounds[i][1]=ymin;
-					bounds[i][2]=xmax;
-					bounds[i][3]=ymax;
-					i++;
-				}
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			File inputFile = new File(path);
+	        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+	        DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+	        Document doc = dBuilder.parse(inputFile);
+	        doc.getDocumentElement().normalize();
+	         
+	        NodeList nList = doc.getElementsByTagName("object");
+	        NodeList boundList=doc.getElementsByTagName("size");
+	        
+	        Node node=boundList.item(0);
+	        
+	        int width=0; //col
+	        int height=0; //height
+	        
+	        if (node.getNodeType() == Node.ELEMENT_NODE) 
+        	{
+	        	Element element = (Element) node;
+	        	width=Integer.parseInt(element.getElementsByTagName("width").item(0).getTextContent());
+	        	height=Integer.parseInt(element.getElementsByTagName("height").item(0).getTextContent());
+
+        	}
+	        
+	        bounds=new int[nList.getLength()][6];
+	        for(int i=0; i<nList.getLength(); i++)
+	        {
+	        	if(i<100)
+	        	{
+	        		Node nNode=nList.item(i);
+		        	if (nNode.getNodeType() == Node.ELEMENT_NODE) 
+		        	{
+		        		Element eElement = (Element) nNode;
+			            bounds[i][0]=Integer.parseInt(eElement.getElementsByTagName("xmin").item(0).getTextContent());
+			            bounds[i][1]=Integer.parseInt(eElement.getElementsByTagName("ymin").item(0).getTextContent());
+			            bounds[i][2]=Integer.parseInt(eElement.getElementsByTagName("xmax").item(0).getTextContent());
+			            bounds[i][3]=Integer.parseInt(eElement.getElementsByTagName("ymax").item(0).getTextContent());
+			            bounds[i][4]=width;
+			            bounds[i][5]=height;
+		        	}
+	        	}
+	        }
+	        
+	        
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		return bounds;
-	}
-	
-	public int numLines(String path)
-	{
-		int lines=0;
-		try {
-			Scanner sc=new Scanner(new File(path));
-			
-			while(sc.hasNextLine())
-			{
-				sc.nextLine();
-				lines++;
-			}
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		return lines;
 	}
 }

@@ -11,7 +11,12 @@ public class FeatureExtraction
 	
 	double[][] featureVector;
 	
-	public FeatureExtraction(Mat[] matrix)
+	public FeatureExtraction()
+	{
+		
+	}
+	
+	public void setMatrix(Mat[] matrix)
 	{
 		this.matrix=matrix;
 	}

@@ -13,4 +13,4 @@ Use the sliding window on top of the image -> extract some objects that match th
 window technique ->Repeat until the person is identified and encapsulated -> Dalal and Triggs have identified you can use up to
 6 scales and with reasonable confidence locate objects of different sizes and different scales -> Then use NMS technique
 
-Can eventually create my own XMLParser but for now will use DOMParser
+Build loading screen that lists what features are loaded like how far into specific process. then open into camera jframe

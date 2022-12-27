@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.imageio.ImageIO;
@@ -13,8 +14,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
+import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
+import org.opencv.core.Rect;
 import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
@@ -23,8 +26,9 @@ public class ImageCreation
 {
 	public static final File currDir=new File(".");
 	public static final String absolutePath=currDir.getAbsolutePath();
-	public static final String path=absolutePath.substring(0, absolutePath.length()-2)+File.separator+"res"+File.separator;	
-	public static final String trainImgPath=path+"Train"+File.separator;
+	public static final String path=absolutePath.substring(0, absolutePath.length()-2)+File.separator+"res"+File.separator+"Train";	
+	public static final String positiveImgPath=path+File.separator+"Positive"+File.separator;
+	public static final String negativeImgPath=path+File.separator+"Negative"+File.separator;
 	
 	JFrame frame;
 
@@ -32,8 +36,8 @@ public class ImageCreation
 	
 	MatOfByte byteMat=new MatOfByte();
 	
-	int WIDTH=640;
-	int HEIGHT=480;
+	int WIDTH=64;
+	int HEIGHT=128;
 	
 	public ImageCreation()
 	{
@@ -46,26 +50,101 @@ public class ImageCreation
 	
 	public Mat[] createTrainingImageSet()
 	{
-		int lines=numLines(trainImgPath+"train.txt");
+		int lines=numLines(positiveImgPath+"train.txt");
 		
+		
+		ArrayList<Mat> mat=new ArrayList<>();
+		//Mat[] matrix=new Mat[lines];
+		try {
+			Scanner sc=new Scanner(new File(positiveImgPath+"train.txt"));
+			
+			int count=0;
+			int[][][] bounds = new int[lines][100][4];
+			while(sc.hasNextLine())
+			{
+				String imageName=sc.nextLine();
+				
+				XMLParser xml=new XMLParser();
+				
+				bounds[count]=xml.parsePersonBounds(positiveImgPath+"Annotations"+File.separator+imageName+".xml");
+				
+				mat=crop(mat, Imgcodecs.imread(positiveImgPath+"JPEGImages"+File.separator+imageName+".jpg"), bounds[count]);
+				
+				count++;
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//Flips images but causes programs to crash
+		/*System.out.println(mat.size());
+		for(int i=0; i<mat.size(); i++)
+		{
+			Mat tmp=new Mat();
+			System.out.println("Flip");
+			Core.flip(mat.get(i), tmp, 0);
+			mat.add(tmp);
+		}
+		System.out.println(mat.size());*/
+		
+		Mat[] matrix=convertALtoArray(mat);
+		
+		return matrix;
+	}
+	
+	public Mat[] createNegativeImageSet()
+	{
+		int lines=numLines(negativeImgPath+"train.txt");
 		Mat[] matrix=new Mat[lines];
-		int i=0;
 		
 		try {
-			Scanner sc=new Scanner(new File(trainImgPath+"train.txt"));
+			Scanner sc=new Scanner(new File(negativeImgPath+"train.txt"));
+			
+			int count=0;
 			
 			while(sc.hasNextLine())
 			{
 				String imageName=sc.nextLine();
 				
-				matrix[i]=Imgcodecs.imread(trainImgPath+"JPEGImages"+File.separator+imageName+".jpg");
-				Size sz=new Size(WIDTH, HEIGHT);
-				Imgproc.resize(matrix[i], matrix[i], sz);
-				i++;
+				matrix[count]=Imgcodecs.imread(negativeImgPath+"0"+File.separator+imageName);
+				
+				count++;
 			}
+			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}
+		
+		return matrix;
+	}
+	
+	public ArrayList<Mat> crop(ArrayList<Mat> matrix, Mat mat, int[][] bounds)
+	{
+		Mat tmp=new Mat();
+		
+		for(int i=0; i<bounds.length; i++)
+		{
+			tmp=mat.clone();
+			Imgproc.resize(tmp, tmp, new Size(bounds[0][4], bounds[0][5]));
+			
+			Rect rectCrop=new Rect(bounds[i][0], bounds[i][1], bounds[i][2]-bounds[i][0], bounds[i][3]-bounds[i][1]);
+			tmp=tmp.submat(rectCrop);
+		
+			matrix.add(tmp);
+		}
+		
+		return matrix;
+	}
+	
+	public Mat[] convertALtoArray(ArrayList<Mat> mat)
+	{
+		Mat[] matrix=new Mat[mat.size()];
+		
+		for(int i=0; i<mat.size(); i++)
+		{
+			matrix[i]=mat.get(i);
 		}
 		
 		return matrix;
