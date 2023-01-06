@@ -70,6 +70,8 @@ public class ImageCreation
 				
 				mat=crop(mat, Imgcodecs.imread(positiveImgPath+"JPEGImages"+File.separator+imageName+".jpg"), bounds[count]);
 				
+				log(count+1, lines, positiveImgPath+"Annotations"+File.separator+imageName+".jpg");
+				
 				count++;
 			}
 		} catch (FileNotFoundException e) {
@@ -108,6 +110,8 @@ public class ImageCreation
 				String imageName=sc.nextLine();
 				
 				matrix[count]=Imgcodecs.imread(negativeImgPath+"0"+File.separator+imageName);
+				
+				log(count+1, lines, negativeImgPath+"Annotations"+File.separator+imageName);
 				
 				count++;
 			}
@@ -204,4 +208,9 @@ public class ImageCreation
         
         return img;
     }
+	
+	public void log(int count, int lines, String path)
+	{
+		System.out.println(count+"/"+lines+": "+path);
+	}
 }

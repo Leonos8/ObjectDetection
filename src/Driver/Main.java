@@ -33,7 +33,7 @@ public class Main
 				Mat[] oldPositiveMatrix=IC.createTrainingImageSet();
 				Mat[] oldNegativeMatrix=IC.createNegativeImageSet();
 				
-				System.out.println(0);
+				log(0);
 				
 				Preprocess processor=new Preprocess();
 				
@@ -45,7 +45,7 @@ public class Main
 				processor.applyGammaCorrection();
 				Mat[] negativeMatrix=processor.getMatrix();
 				
-				System.out.println(1);
+				log(1);
 				
 				FeatureExtraction feature=new FeatureExtraction();
 				
@@ -57,7 +57,7 @@ public class Main
 				feature.runFeatureExtraction();
 				double[][]negativeFeatureVector=feature.getFeatureVector();
 				
-				System.out.println(2);
+				log(2);
 				
 				//Will edit these accordingly
 				double lr=.01; //Might make a method to calculate this?
@@ -65,8 +65,28 @@ public class Main
 				
 				LinearSVM lsvm=new LinearSVM(positiveFeatureVector, negativeFeatureVector, lr, c, 500); 
 				
-				System.out.println(3);
+				//log(3);
 			}
 		});
+	}
+	
+	public static void log(int val)
+	{
+		if(val==0)
+		{
+			System.out.println("\nImage collection complete...\n");
+		}
+		else if(val==1)
+		{
+			System.out.println("\nPre-processing complete...\n");
+		}
+		else if(val==2)
+		{
+			System.out.println("\nFeature extraction complete...\n");
+		}
+		else if(val==3)
+		{
+			System.out.println("\nLinear SVM training complete...\n");
+		}
 	}
 }

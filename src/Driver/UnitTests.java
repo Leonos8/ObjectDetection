@@ -152,6 +152,6 @@ public class UnitTests {
 				{8.1676,4.6457}};
 		
 		LinearSVM lsvm=new LinearSVM(p, n, lr, c, 500); 
-		lsvm.distances();
+		//lsvm.distances();
 	}
 }

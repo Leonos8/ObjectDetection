@@ -47,7 +47,7 @@ public class LinearSVM
 		
 		for(int i=0; i<featureVector.length; i++)
 		{
-			distance=featureVector[0][0][0]*dotProduct()-1;
+			//distance=featureVector[0][0][0]*dotProduct()-1;
 		}
 		print(positiveFeatureVector);
 		

@@ -11,10 +11,8 @@ public class FeatureExtraction
 	
 	double[][] featureVector;
 	
-	public FeatureExtraction()
-	{
-		
-	}
+	int count=1;
+	int size;
 	
 	public void setMatrix(Mat[] matrix)
 	{
@@ -24,15 +22,11 @@ public class FeatureExtraction
 	public void runFeatureExtraction()
 	{
 		featureVector = new double[matrix.length][HistogramOfOrientedGradients(matrix[0], 0).length];
+		this.size=featureVector.length;
+		
 		for(int i=0; i<matrix.length; i++)
 		{
-			//System.out.println(i);
 			featureVector[i]=HistogramOfOrientedGradients(matrix[i], i);
-			//System.out.println(featureVector[i][0]);
-		}
-		for(int i=0; i<featureVector[0].length; i++)
-		{
-			System.out.println(featureVector[0][i]);
 		}
 		
 		setFeatureVector(featureVector);
@@ -256,6 +250,9 @@ public class FeatureExtraction
 			}
 		}
 		
+		log(count, size);
+		count++;
+		
 		return featureVector;
 	}
 	
@@ -283,5 +280,10 @@ public class FeatureExtraction
 			}
 		}
 		return normalizedArray;
+	}
+	
+	public void log(int count, int lines)
+	{
+		System.out.println(count+"/"+lines+": Feature Extraction");
 	}
 }

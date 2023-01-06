@@ -34,13 +34,14 @@ public class Preprocess
 		for(int i=0; i<matrix.length; i++)
 		{
 			setMatrix(gammaCorrection(matrix[i]), i);
+			
+			log(i+1, matrix.length);
 		}
 	}
 	
 	public Mat gammaCorrection(Mat matrix)
 	{		
 		double gamma=2.2;
-		System.out.println(count);
 		count++;
 		for(int c=0; c<matrix.cols(); c++)
 		{
@@ -59,5 +60,10 @@ public class Preprocess
 		//image.displayImage(matrix);
 		
 		return matrix;
+	}
+	
+	public void log(int count, int lines)
+	{
+		System.out.println(count+"/"+lines+": Gamma Correction");
 	}
 }
